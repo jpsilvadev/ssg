@@ -6,6 +6,7 @@ from inline_md import (
     extract_markdown_links,
     split_nodes_image,
     split_nodes_link,
+    text_to_textnodes,
 )
 
 
@@ -260,6 +261,35 @@ class TestSplitNodesLink(unittest.TestCase):
         self.assertEqual(
             split_nodes_link([node]),
             [TextNode("This is text without links", TextType.TEXT)],
+        )
+
+
+class TestTextToTextNodes(unittest.TestCase):
+    def test_all_tokens(self):
+        md_sting = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        self.assertEqual(
+            text_to_textnodes(md_sting),
+            [
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode(
+                    "obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"
+                ),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+        )
+
+    def test_no_tokens(self):
+        text_string = "This is some text without md tokens"
+        self.assertEqual(
+            text_to_textnodes(text_string),
+            [TextNode("This is some text without md tokens", TextType.TEXT)],
         )
 
 

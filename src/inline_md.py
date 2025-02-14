@@ -47,10 +47,14 @@ def extract_markdown_links(text):
 
 
 def split_nodes_image(old_nodes):
+    nodes = []
     for old_node in old_nodes:
-        image_nodes = extract_markdown_images(old_node.text)
+        # prevent overwriting the type of other tokens
+        if old_node.text_type != TextType.TEXT:
+            nodes.append(old_node)
+            continue
 
-        nodes = []
+        image_nodes = extract_markdown_images(old_node.text)
 
         # needs to be sliced off each iteration
         text_to_process = old_node.text
@@ -75,10 +79,13 @@ def split_nodes_image(old_nodes):
 
 
 def split_nodes_link(old_nodes):
+    nodes = []
     for old_node in old_nodes:
-        link_nodes = extract_markdown_links(old_node.text)
+        if old_node.text_type != TextType.TEXT:
+            nodes.append(old_node)
+            continue
 
-        nodes = []
+        link_nodes = extract_markdown_links(old_node.text)
 
         # needs to be sliced off each iteration
         text_to_process = old_node.text
@@ -99,4 +106,14 @@ def split_nodes_link(old_nodes):
         if text_to_process:
             nodes.append(TextNode(text_to_process, TextType.TEXT))
 
+    return nodes
+
+
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "*", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
     return nodes
