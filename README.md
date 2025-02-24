@@ -5,7 +5,7 @@ A static site generator built with Python, designed to convert Markdown files in
 ## Prerequisites
 - **Ensure you have Python installed**
 ```bash
-python3 --version
+$ python3 --version
 ```
 
 ## Getting Started
