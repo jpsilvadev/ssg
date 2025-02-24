@@ -3,10 +3,6 @@ import shutil
 
 
 def copy_static_content(src, dest):
-    ROOT_DIR = os.getcwd()
-    src = os.path.join(ROOT_DIR, src)
-    dest = os.path.join(ROOT_DIR, dest)
-
     if os.path.exists(dest):
         shutil.rmtree(dest)
 
