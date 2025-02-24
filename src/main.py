@@ -1,7 +1,6 @@
 import os
-from textnode import TextNode, TextType
 from copy_static_content import copy_static_content
-from site_generator import generate_page
+from site_generator import generate_pages_recursive
 
 ROOT_DIR = os.getcwd()
 STATIC_PATH = os.path.join(ROOT_DIR, "static")
@@ -12,10 +11,7 @@ CONTENT_PATH = os.path.join(ROOT_DIR, "content")
 
 def main():
     copy_static_content(STATIC_PATH, PUBLIC_PATH)
-
-    MD_INDEX_PATH = os.path.join(CONTENT_PATH, "index.md")
-    HTML_INDEX_PATH = os.path.join(PUBLIC_PATH, "index.html")
-    generate_page(MD_INDEX_PATH, TEMPLATE_PATH, HTML_INDEX_PATH)
+    generate_pages_recursive(CONTENT_PATH, TEMPLATE_PATH, PUBLIC_PATH)
 
 
 if __name__ == "__main__":
