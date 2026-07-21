@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from block_md import markdown_to_html_node
 
@@ -44,3 +45,26 @@ def generate_page(
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     with open(dest_path, "w", encoding="utf-8") as f:
         f.write(html_to_write)
+
+
+def generate_page_recursive(
+    dir_path_content: str | os.PathLike[str],
+    template_path: str | os.PathLike[str],
+    dest_dir_path: str | os.PathLike[str],
+) -> None:
+    dir_path_content = os.path.join(os.getcwd(), os.fspath(dir_path_content))
+    template_path = os.path.join(os.getcwd(), os.fspath(template_path))
+    dest_dir_path = os.path.join(os.getcwd(), os.fspath(dest_dir_path))
+
+    # base case -> markdown file found
+    if os.path.isfile(dir_path_content):
+        path = Path(dest_dir_path)
+        updated_dest_path = path.with_suffix(".html")
+        generate_page(dir_path_content, template_path, updated_dest_path)
+        return
+
+    # handle dirs
+    for item in os.listdir(dir_path_content):
+        deeper_src_path = os.path.join(dir_path_content, item)
+        deeper_dest_path = os.path.join(dest_dir_path, item)
+        generate_page_recursive(deeper_src_path, template_path, deeper_dest_path)

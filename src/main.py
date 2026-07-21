@@ -1,20 +1,20 @@
 import os
 import shutil
 
-from generate_content import generate_page
+from generate_content import generate_page_recursive
 
 
-def main():
+def main() -> None:
     src = "./static/"
     dest = "./public/"
 
     clear_dir(dest)
     copy_recursive(src, dest)
 
-    from_path = "content/index.md"
+    from_path = "content/"
     template_path = "template.html"
-    dest_path = "public/index.html"
-    generate_page(from_path, template_path, dest_path)
+    dest_path = "public/"
+    generate_page_recursive(from_path, template_path, dest_path)
 
 
 def copy_recursive(
