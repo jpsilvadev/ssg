@@ -26,7 +26,7 @@ class HTMLNode:
             prop_line += f' {k}="{v}"'
         return prop_line
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
 
 
@@ -36,7 +36,7 @@ class LeafNode(HTMLNode):
         tag: str | None,
         value: str | None,
         props: dict[str, str | None] | None = None,
-    ):
+    ) -> None:
         super().__init__(tag, value, None, props)
 
     def to_html(self) -> str:
@@ -48,7 +48,7 @@ class LeafNode(HTMLNode):
 
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
 
 
