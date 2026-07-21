@@ -5,6 +5,8 @@ third-party dependencies. It walks a directory of Markdown files, converts each
 one to HTML using a shared page template, and writes the result to a `docs/`
 folder ready to be served or deployed to GitHub Pages.
 
+**Live example:** [jpsilvadev.github.io/ssg/](https://jpsilvadev.github.io/ssg/) — a Tolkien site built from the Markdown in `content/` and deployed to GitHub Pages.
+
 The Markdown parser is hand-rolled.
 Text is tokenized into inline nodes (bold, italic, code, links, images), grouped into
 block-level nodes (headings, paragraphs, quotes, lists, code), and
