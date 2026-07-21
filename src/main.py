@@ -8,14 +8,14 @@ from generate_content import generate_page_recursive
 def main() -> None:
     basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
-    src = "static/"
-    dest = "docs/"
+    src = "./static/"
+    dest = "./docs/"
 
     clear_dir(dest)
     copy_recursive(src, dest)
 
-    from_path = "content/"
-    template_path = "template.html"
+    from_path = "./content/"
+    template_path = "./template.html"
     dest_path = "docs/"  # swapped from public to deploy on github pages
     generate_page_recursive(from_path, template_path, dest_path, basepath)
 

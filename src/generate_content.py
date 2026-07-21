@@ -73,4 +73,6 @@ def generate_page_recursive(
     for item in os.listdir(dir_path_content):
         deeper_src_path = os.path.join(dir_path_content, item)
         deeper_dest_path = os.path.join(dest_dir_path, item)
-        generate_page_recursive(deeper_src_path, template_path, deeper_dest_path)
+        generate_page_recursive(
+            deeper_src_path, template_path, deeper_dest_path, basepath
+        )
