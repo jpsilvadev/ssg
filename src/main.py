@@ -1,23 +1,29 @@
 import os
 import shutil
 import sys
+import tomllib
 
 from generate_content import generate_page_recursive
+
+CONFIG_PATH = "./config.toml"
 
 
 def main() -> None:
     basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
-    src = "./static/"
-    dest = "./docs/"
+    paths = load_config()
 
-    clear_dir(dest)
-    copy_recursive(src, dest)
+    clear_dir(paths["output"])
+    copy_recursive(paths["static"], paths["output"])
 
-    from_path = "./content/"
-    template_path = "./template.html"
-    dest_path = "docs/"  # swapped from public to deploy on github pages
-    generate_page_recursive(from_path, template_path, dest_path, basepath)
+    generate_page_recursive(
+        paths["content"], paths["template"], paths["output"], basepath
+    )
+
+
+def load_config(path: str | os.PathLike[str] = CONFIG_PATH) -> dict[str, str]:
+    with open(path, "rb") as f:
+        return tomllib.load(f)["paths"]
 
 
 def copy_recursive(

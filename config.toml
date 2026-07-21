@@ -1,0 +1,5 @@
+[paths]
+static = "./static/"
+content = "./content/"
+template = "./template.html"
+output = "./docs/"
