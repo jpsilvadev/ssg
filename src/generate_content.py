@@ -24,6 +24,7 @@ def generate_page(
     from_path: str | os.PathLike[str],
     template_path: str | os.PathLike[str],
     dest_path: str | os.PathLike[str],
+    basepath: str | os.PathLike[str] = "/",  # tweak to allow github pages hosting
 ) -> None:
     from_path = os.path.join(os.getcwd(), os.fspath(from_path))
     template_path = os.path.join(os.getcwd(), os.fspath(template_path))
@@ -42,6 +43,10 @@ def generate_page(
     html_to_write = html_template.replace("{{ Title }}", page_title)
     html_to_write = html_to_write.replace("{{ Content }}", html_string)
 
+    # tweaks to allow github pages hosting
+    html_to_write = html_to_write.replace('href="/', f'href="{basepath}')
+    html_to_write = html_to_write.replace('src="/', f'src="{basepath}')
+
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     with open(dest_path, "w", encoding="utf-8") as f:
         f.write(html_to_write)
@@ -51,6 +56,7 @@ def generate_page_recursive(
     dir_path_content: str | os.PathLike[str],
     template_path: str | os.PathLike[str],
     dest_dir_path: str | os.PathLike[str],
+    basepath: str | os.PathLike[str] = "/",
 ) -> None:
     dir_path_content = os.path.join(os.getcwd(), os.fspath(dir_path_content))
     template_path = os.path.join(os.getcwd(), os.fspath(template_path))
@@ -60,7 +66,7 @@ def generate_page_recursive(
     if os.path.isfile(dir_path_content):
         path = Path(dest_dir_path)
         updated_dest_path = path.with_suffix(".html")
-        generate_page(dir_path_content, template_path, updated_dest_path)
+        generate_page(dir_path_content, template_path, updated_dest_path, basepath)
         return
 
     # handle dirs
